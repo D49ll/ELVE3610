@@ -1,0 +1,62 @@
+def LAB4():
+  step_count_22f26743_00e0_44f7_8fe0_04921ff62d78 = 0
+  thread Step_Counter_Thread_ad8b2a3f_721e_4686_8416_54fd1dc08510():
+    while (True):
+      step_count_22f26743_00e0_44f7_8fe0_04921ff62d78 = step_count_22f26743_00e0_44f7_8fe0_04921ff62d78 + 1
+      sync()
+    end
+  end
+  run Step_Counter_Thread_ad8b2a3f_721e_4686_8416_54fd1dc08510()
+  set_tool_voltage(0)
+  set_gravity([0.0, 0.0, 9.82])
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_payload(0.0)
+  set_safety_mode_transition_hardness(1)
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  $ 1 "BeforeStart"
+  $ 2 "startpos≔p[0.1, -0.3, 0.17, -3.14, 0, 0]"
+  global startpos=p[0.1, -0.3, 0.17, -3.14, 0, 0]
+  $ 3 "pickup≔p[0.3, -0.21, 0.12, -3.14, 0, 0]"
+  global pickup=p[0.3, -0.21, 0.12, -3.14, 0, 0]
+  $ 4 "delivery≔p[-0.1, -0.35, 0.024, -3.14, 0, 0]"
+  global delivery=p[-0.1, -0.35, 0.024, -3.14, 0, 0]
+  $ 5 "delivery_h≔pose_add(delivery, p[0,0,0.146,0,0,0])"
+  global delivery_h=pose_add(delivery, p[0,0,0.146,0,0,0])
+  $ 6 "pickup_h≔pose_add(pickup, p[0,0,0.05,0,0,0])"
+  global pickup_h=pose_add(pickup, p[0,0,0.05,0,0,0])
+  $ 7 "Robot Program"
+  $ 8 "Script: move.script"
+  movel(startpos)
+  
+  i = 0
+  z_ret = 0.024
+  
+  while i < 5:
+  	movel(pickup_h)
+  	movel(pickup)
+  
+  	set_digital_out(0, True)
+  	sleep(0.5)
+  
+  	movel(pickup_h)
+  	movel(delivery_h)
+  	movel(delivery)
+  
+  	set_digital_out(0, False)
+  	sleep(0.5)
+  
+  	movel(delivery_h)
+  
+  	i = i+1
+  	pickup = pose_add(pickup,p[0,0,-z_ret,0,0,0])
+  	delivery = pose_add(delivery,p[0,0,z_ret,0,0,0])
+  end
+  
+  movel(startpos)
+end

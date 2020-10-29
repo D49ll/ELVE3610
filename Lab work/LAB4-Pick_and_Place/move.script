@@ -1,0 +1,27 @@
+movel(startpos)
+
+i = 0
+z_ret = 0.024
+
+while i < 5:
+	movel(pickup_h)
+	movel(pickup)
+	
+	set_digital_out(0, True)
+	sleep(0.5)
+
+	movel(pickup_h)
+	movel(delivery_h)
+	movel(delivery)
+	
+	set_digital_out(0, False)
+	sleep(0.5)
+
+	movel(delivery_h)
+
+	i = i+1
+	pickup = pose_add(pickup,p[0,0,-z_ret,0,0,0])
+	delivery = pose_add(delivery,p[0,0,z_ret,0,0,0])
+end
+
+movel(startpos)
